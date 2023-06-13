@@ -1,0 +1,48 @@
+import random
+
+random.seed()
+
+# Definimos los valores iniciales del tanque y las válvulas
+tanque_volumen = 0
+entrada_abierta = True
+salida_abierta = True
+capacidad = 4000
+entrada_por_segundo = 400
+salida_por_segundo = 500
+segundo = random.randint(1, 60)  # Genera un número aleatorio entre 1 y 60
+
+# Ciclo principal del programa
+for i in range(segundo):
+    # Verificamos si el tanque ha superado el 75% y cerramos la válvula de entrada
+    if tanque_volumen > (0.75 * capacidad) and entrada_abierta:
+        entrada_abierta = False
+        print("La válvula de entrada se ha cerrado.")
+
+    # Verificamos si el tanque ha bajado del 50% y cerramos la válvula de salida
+    if tanque_volumen < (0.5 * capacidad) and salida_abierta:
+        salida_abierta = False
+        print("La válvula de salida se ha cerrado.")
+
+    # Si ambas válvulas están cerradas, abrimos la válvula de entrada
+    if not entrada_abierta and not salida_abierta:
+        entrada_abierta = True
+        print("La válvula de entrada se ha abierto.")
+
+    # Calculamos el volumen del tanque en función de las entradas y salidas
+    if entrada_abierta:
+        tanque_volumen += entrada_por_segundo
+    if salida_abierta:
+        tanque_volumen -= salida_por_segundo
+    tanque_volumen = max(0, tanque_volumen)  # El volumen no puede ser negativo
+    tanque_volumen = min(
+        capacidad, tanque_volumen
+    )  # El volumen no puede superar la capacidad
+
+    # Imprimimos el volumen del tanque y el estado de las válvulas
+    print(
+        "Volumen del tanque: {} litros, Entrada: {}, Salida: {}".format(
+            tanque_volumen,
+            "Abierta" if entrada_abierta else "Cerrada",
+            "Abierta" if salida_abierta else "Cerrada",
+        )
+    )
